@@ -3,6 +3,9 @@ from django.utils import timezone
 from .models import Post
 from .forms import PostForm
 
+from rest_framework import viewsets
+from .serializers import PostModelSerializer
+
 
 def post_list(request):
     posts = Post.objects.all().order_by('title') 
@@ -39,3 +42,8 @@ def post_edit(request, pk):
      else:
          form = PostForm(instance=post)
      return render(request, 'blog/post_edit.html', {'form': form})
+
+
+class PostModelViewSet(viewsets.ModelViewSet):
+    serializer_class = PostModelSerializer
+    queryset = Post.objects.all().order_by('-title')
